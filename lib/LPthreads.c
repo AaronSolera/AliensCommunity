@@ -1,7 +1,9 @@
 #include "LPthreads.h"
 
+Queue queue;
+
 void lthread_create(lthread_t * thread, const lthread_attr_t * attr, void *(*routine) (void *), void * arg){
-	
+
 }
 
 void lthread_end(){
