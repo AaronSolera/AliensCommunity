@@ -2,20 +2,29 @@ CC = gcc
 MAKE_STATIC_LIB = ar rv
 ALLEGRO_FLAGS = -lallegro
 JSON_FLAGS = -ljson-c
+LIB_FLAGS = -llpthread -lqueue
 LIB = cd ./lib &&
 RM_O = cd ./lib && rm *.o
 
-.PHONY: main
+.PHONY: all
+
+all: allegro json main
 	$(RM_O)
 
-main: libqueue.a allegro json 
-	$(CC) ./src/main.c $(ALLEGRO_FLAGS) $(JSON_FLAGS) -o ./bin/main -I./include ./lib/libqueue.a
+main: liblpthread.a libqueue.a 
+	$(CC) -o ./bin/main ./src/main.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS)
+	
+liblpthread.a: lpthread.o
+	$(LIB) $(MAKE_STATIC_LIB) liblpthread.a lpthread.o 
 
-libqueue.a: queue.o
-	$(LIB) $(MAKE_STATIC_LIB) libqueue.a queue.o
+lpthread.o: ./lib/lpthread.c
+	$(LIB) $(CC) -c lpthread.c -I../include
 
-queue.o: ./lib/queue.c
-	$(LIB) $(CC) -c queue.c
+libqueue.a: libqueue.o
+	$(LIB) $(MAKE_STATIC_LIB) libqueue.a libqueue.o
+
+libqueue.o: ./lib/libqueue.c
+	$(LIB) $(CC) -c libqueue.c
 
 allegro:
 	sudo apt-get install liballegro5-dev

@@ -9,6 +9,11 @@
  * Referenced by dradtke at https://gist.github.com/dradtke/2494024
  */
 
+#include <lpthread.h>
+#include <libqueue.h>
+#include <unistd.h>
+
+/*
 #include <stdio.h>
 #include <allegro5/allegro.h>
 
@@ -100,5 +105,45 @@ int main(int argc, char *argv[])
 	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
 
+	return 0;
+*/
+
+lthread_t thread_0, thread_1, thread_2;
+lthread_attr_t attr;
+
+void fn0(void){
+	for (int i = 0; i < 100000; ++i)
+	{
+		printf("fun0 iteration -> %d\n",i);
+		sleep(1);
+	}
+}
+
+void fn1(void){
+	for (int i = 0; i < 100000; ++i)
+	{
+		printf("fun1 iteration -> %d\n",i);
+		sleep(1);
+	}
+}
+
+void fn2(void){
+	for (int i = 0; i < 100000; ++i)
+	{
+		printf("fun2 iteration -> %d\n\n",i);
+		sleep(1);
+	}
+}
+
+int main(int argc, char const *argv[])
+{	
+	lthread_create(&thread_0, &attr, &fn0, NULL);
+	lthread_create(&thread_1, &attr, &fn1, NULL);
+	lthread_create(&thread_2, &attr, &fn2, NULL);
+	for (int i = 0; i < 100000; ++i)
+	{
+		printf("main iteration -> %d\n",i);
+		sleep(1);
+	}
 	return 0;
 }

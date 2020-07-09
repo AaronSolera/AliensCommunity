@@ -1,5 +1,5 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef LIBQUEUE_H
+#define LIBQUEUE_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,9 +40,14 @@ int isEmpty(struct Queue *queue);
 int enqueue(struct Queue *queue, void *element);
 
 /* 
-	Removes an element from front of queue and gets his value
+	Removes an element from front of queue and gets its value
 */
 int dequeue(struct Queue *queue, void *target);
+
+/* 
+	Set reference to data from queue front in target parameter
+*/
+int top(struct Queue *queue, void * target);
 
 /* 
 	Deallocates the memory allocated to queue 

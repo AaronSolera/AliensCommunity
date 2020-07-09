@@ -1,9 +1,16 @@
-#ifndef _SHMHANDLER_H
-#define _SHMHANDLER_H  
+#ifndef _LPTHREAD_H
+#define _LPTHREAD_H  
 
+#include<libqueue.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<ucontext.h>
+#include<stdbool.h> 
+#include<signal.h>
+#include<sys/types.h>
+#include<sys/time.h>
+
+#define STACK_SIZE 1024 * 1024
 
 /*
 *	https://code.woboq.org/userspace/glibc/nptl/pthread_create.c.html
@@ -21,11 +28,17 @@ typedef struct {
     void                *__stackaddr;
     void                (*__exitfunc)(void *status);
     int                 __policy;
-    struct sched_param  __param;
+    //struct sched_param  __param;
     unsigned            __guardsize;
 } lthread_attr_t;
 
-void lthread_create(lthread_t * thread, const lthread_attr_t * attr, void *(*routine) (void *), void * arg);
+typedef struct {
+	ucontext_t context;
+	lthread_t id;
+	lthread_attr_t attr;
+} lthread;
+
+void lthread_create(lthread_t * thread, const lthread_attr_t * attr, void (*routine) (void), void * arg);
 void lthread_end();
 void lthread_yield();
 void lthread_join();
