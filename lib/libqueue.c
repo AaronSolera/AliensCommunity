@@ -71,14 +71,6 @@ int dequeue(struct Queue *queue, void *target)
 	return 0;
 }
 
-int top(struct Queue *queue, void * target)
-{
-	if (isEmpty(queue))
-		return -1;
-	target = queue->rear->data;
-	return 0;
-}
-
 int destroy(struct Queue *queue)
 {
 	struct Node *current_node;
@@ -95,7 +87,6 @@ int destroy(struct Queue *queue)
 
 	return 0;
 }
-
 
 int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, const void *b))
 {

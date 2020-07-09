@@ -111,24 +111,24 @@ int main(int argc, char *argv[])
 lthread_t thread_0, thread_1, thread_2;
 lthread_attr_t attr;
 
-void fn0(void){
-	for (int i = 0; i < 100000; ++i)
+void * fn0(void *arg){
+	for (int i = 0; i < 5; ++i)
 	{
 		printf("fun0 iteration -> %d\n",i);
 		sleep(1);
 	}
 }
 
-void fn1(void){
-	for (int i = 0; i < 100000; ++i)
+void * fn1(void *arg){
+	for (int i = 0; i < 2; ++i)
 	{
 		printf("fun1 iteration -> %d\n",i);
 		sleep(1);
 	}
 }
 
-void fn2(void){
-	for (int i = 0; i < 100000; ++i)
+void * fn2(void *arg){
+	for (int i = 0; i < 3; ++i)
 	{
 		printf("fun2 iteration -> %d\n\n",i);
 		sleep(1);
@@ -137,10 +137,10 @@ void fn2(void){
 
 int main(int argc, char const *argv[])
 {	
-	lthread_create(&thread_0, &attr, &fn0, NULL);
-	lthread_create(&thread_1, &attr, &fn1, NULL);
-	lthread_create(&thread_2, &attr, &fn2, NULL);
-	for (int i = 0; i < 100000; ++i)
+	lthread_create(&thread_0, &attr, fn0, NULL);
+	lthread_create(&thread_1, &attr, fn1, NULL);
+	lthread_create(&thread_2, &attr, fn2, NULL);
+	for (int i = 0; i < 10; ++i)
 	{
 		printf("main iteration -> %d\n",i);
 		sleep(1);

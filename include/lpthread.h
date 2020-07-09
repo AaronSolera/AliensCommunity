@@ -5,6 +5,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<ucontext.h>
+#include<unistd.h>
 #include<stdbool.h> 
 #include<signal.h>
 #include<sys/types.h>
@@ -36,9 +37,10 @@ typedef struct {
 	ucontext_t context;
 	lthread_t id;
 	lthread_attr_t attr;
+	bool isActive;
 } lthread;
 
-void lthread_create(lthread_t * thread, const lthread_attr_t * attr, void (*routine) (void), void * arg);
+void lthread_create(lthread_t * thread, const lthread_attr_t * attr, void *(*routine) (void*), void * arg);
 void lthread_end();
 void lthread_yield();
 void lthread_join();

@@ -45,11 +45,6 @@ int enqueue(struct Queue *queue, void *element);
 int dequeue(struct Queue *queue, void *target);
 
 /* 
-	Set reference to data from queue front in target parameter
-*/
-int top(struct Queue *queue, void * target);
-
-/* 
 	Deallocates the memory allocated to queue 
 */
 int destroy(struct Queue *queue);
