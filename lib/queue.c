@@ -1,4 +1,4 @@
-#include "../include/libqueue.h"
+#include "../include/queue.h"
 
 int initQueue(struct Queue *queue, int element_size)
 {

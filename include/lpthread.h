@@ -1,7 +1,7 @@
 #ifndef _LPTHREAD_H
 #define _LPTHREAD_H  
 
-#include<libqueue.h>
+#include<queue.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<ucontext.h>

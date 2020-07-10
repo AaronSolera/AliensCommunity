@@ -20,11 +20,11 @@ liblpthread.a: lpthread.o
 lpthread.o: ./lib/lpthread.c
 	$(LIB) $(CC) -c lpthread.c -I../include
 
-libqueue.a: libqueue.o
-	$(LIB) $(MAKE_STATIC_LIB) libqueue.a libqueue.o
+libqueue.a: queue.o
+	$(LIB) $(MAKE_STATIC_LIB) libqueue.a queue.o
 
-libqueue.o: ./lib/libqueue.c
-	$(LIB) $(CC) -c libqueue.c
+queue.o: ./lib/queue.c
+	$(LIB) $(CC) -c queue.c
 
 allegro:
 	sudo apt-get install liballegro5-dev

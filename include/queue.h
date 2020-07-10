@@ -1,5 +1,5 @@
-#ifndef LIBQUEUE_H
-#define LIBQUEUE_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
 #include <stdlib.h>
 #include <stdio.h>

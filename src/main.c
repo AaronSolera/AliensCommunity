@@ -10,8 +10,6 @@
  */
 
 #include <lpthread.h>
-#include <libqueue.h>
-#include <unistd.h>
 
 /*
 #include <stdio.h>
