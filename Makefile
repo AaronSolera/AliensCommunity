@@ -1,6 +1,6 @@
 CC = gcc
 MAKE_STATIC_LIB = ar rv
-ALLEGRO_FLAGS = -lallegro
+ALLEGRO_FLAGS = -lallegro -lallegro_image
 JSON_FLAGS = -ljson-c
 LIB_FLAGS = -llpthread -lqueue -llinked_list
 LIB = cd ./lib &&
@@ -12,7 +12,7 @@ all: allegro json main
 	$(RM_O)
 
 main: liblpthread.a libqueue.a liblinked_list.a
-	$(CC) -o ./bin/main ./src/main.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
+	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
 	
 liblpthread.a: lpthread.o
 	$(LIB) $(MAKE_STATIC_LIB) liblpthread.a lpthread.o 

@@ -10,7 +10,7 @@
  */
 
 #include <lpthread.h>
-
+#include "bridge.h"
 /*
 #include <stdio.h>
 #include <allegro5/allegro.h>
@@ -182,6 +182,8 @@ void * fn6(void *arg){
 
 int main(int argc, char const *argv[])
 {	
+	struct Bridge bridge;
+	initBridge(&bridge, CENTRAL_BRIDGE_CONFIG_FILENAME);
 	lthread_mutex_init(&mutex, NULL);
 	lthread_create(&thread_0, NULL, fn5, NULL);
 	lthread_create(&thread_1, NULL, fn6, NULL);

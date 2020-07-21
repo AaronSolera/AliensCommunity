@@ -3,11 +3,10 @@
 
 #include <stdio.h>
 #include <json-c/json.h>
-#include "queue.h"
 
-#define WEST_BRIDGE_CONFIG_FILENAME 	"west_bridge_config.json"
-#define CENTRAL_BRIDGE_CONFIG_FILENAME  "central_bridge_config.json"
-#define EAST_BRIDGE_CONFIG_FILENAME  	"east_bridge_config.json"
+#define WEST_BRIDGE_CONFIG_FILENAME 	"files/west_bridge_config.json"
+#define CENTRAL_BRIDGE_CONFIG_FILENAME  "files/central_bridge_config.json"
+#define EAST_BRIDGE_CONFIG_FILENAME  	"files/east_bridge_config.json"
 
 struct Bridge
 {
