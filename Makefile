@@ -2,7 +2,7 @@ CC = gcc
 MAKE_STATIC_LIB = ar rv
 ALLEGRO_FLAGS = -lallegro
 JSON_FLAGS = -ljson-c
-LIB_FLAGS = -llpthread -lqueue
+LIB_FLAGS = -llpthread -lqueue -llinked_list
 LIB = cd ./lib &&
 RM_O = cd ./lib && rm *.o
 
@@ -11,14 +11,20 @@ RM_O = cd ./lib && rm *.o
 all: allegro json main
 	$(RM_O)
 
-main: liblpthread.a libqueue.a 
-	$(CC) -o ./bin/main ./src/main.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS)
+main: liblpthread.a libqueue.a liblinked_list.a
+	$(CC) -o ./bin/main ./src/main.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
 	
 liblpthread.a: lpthread.o
 	$(LIB) $(MAKE_STATIC_LIB) liblpthread.a lpthread.o 
 
 lpthread.o: ./lib/lpthread.c
 	$(LIB) $(CC) -c lpthread.c -I../include
+
+liblinked_list.a: linked_list.o
+	$(LIB) $(MAKE_STATIC_LIB) liblinked_list.a linked_list.o
+
+linked_list.o: ./lib/linked_list.c
+	$(LIB) $(CC) -c linked_list.c
 
 libqueue.a: queue.o
 	$(LIB) $(MAKE_STATIC_LIB) libqueue.a queue.o

@@ -107,41 +107,85 @@ int main(int argc, char *argv[])
 */
 
 lthread_t thread_0, thread_1, thread_2;
-lthread_attr_t attr;
+lthread_mutex_t mutex;
+int x = 0;
 
 void * fn0(void *arg){
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		printf("fun0 iteration -> %d\n",i);
-		sleep(1);
 	}
 }
 
 void * fn1(void *arg){
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 20; ++i)
 	{
 		printf("fun1 iteration -> %d\n",i);
-		sleep(1);
 	}
 }
 
 void * fn2(void *arg){
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 30; ++i)
 	{
-		printf("fun2 iteration -> %d\n\n",i);
-		sleep(1);
+		printf("fun2 iteration -> %d\n",i);
+	}
+}
+
+int fibonacci(int n)
+{
+  /* La función normal, recursiva */
+  if (n>2)
+    return fibonacci(n-1) + fibonacci(n-2);
+  /* Este es el caso más común,  */
+  else if (n==2)        /* Ponemos esto para agilizar un poco el proceso */
+    return 1;
+  else if (n==1)       
+    return 1;
+  else if (n==0)
+    return 0;
+  else
+    return -1;          /* Error */
+}
+
+int factorial(int Num){
+   if(Num==0)
+     return 1;
+   else
+     return (factorial(Num-1)*Num);
+}
+
+void * fn3(void *arg){
+	printf("%i\n", fibonacci(40));
+}
+
+void * fn4(void *arg){
+	printf("%i\n", factorial(1));
+}
+
+void * fn5(void *arg){
+	for (int i = 0; i < 100000; ++i){
+		lthread_mutex_trylock(&mutex);
+		x++;
+		lthread_mutex_unlock(&mutex);
+		printf("fun5 iteration -> %d, x = %i\n", i, x);
+	}
+}
+
+void * fn6(void *arg){
+	for (int i = 0; i < 100000; ++i){
+		lthread_mutex_trylock(&mutex);
+		x++;
+		lthread_mutex_unlock(&mutex);
+		printf("fun6 iteration -> %d, x = %i\n", i, x);
 	}
 }
 
 int main(int argc, char const *argv[])
 {	
-	lthread_create(&thread_0, &attr, fn0, NULL);
-	lthread_create(&thread_1, &attr, fn1, NULL);
-	lthread_create(&thread_2, &attr, fn2, NULL);
-	for (int i = 0; i < 10; ++i)
-	{
-		printf("main iteration -> %d\n",i);
-		sleep(1);
-	}
+	lthread_mutex_init(&mutex, NULL);
+	lthread_create(&thread_0, NULL, fn5, NULL);
+	lthread_create(&thread_1, NULL, fn6, NULL);
+	lthread_join(thread_1, NULL);
+	printf("Fin del programa\n");
 	return 0;
 }

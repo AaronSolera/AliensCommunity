@@ -5,18 +5,18 @@
 #include <stdio.h>
 #include <string.h>
 
-struct Node
+struct qNode
 {
 	void *data;
-	struct Node *next;
+	struct qNode *next;
 };
 
 struct Queue
 {
 	int size;
 	int element_size;
-	struct Node *front;
-	struct Node *rear;
+	struct qNode *front;
+	struct qNode *rear;
 };
 
 /* 
@@ -25,9 +25,9 @@ struct Queue
 int initQueue(struct Queue *queue, int element_size);
 
 /* 
-	Function for creating a Node 
+	Function for creating a qNode 
 */
-struct Node * createNode(void *element, int element_size);
+struct qNode * createqNode(void *element, int element_size);
 
 /* 
 	Function for checking whether the queue is empty
@@ -55,8 +55,8 @@ int destroy(struct Queue *queue);
 int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, const void *b));
 
 /*
-	Function to swap data of two nodes a and b
+	Function to swap data of two qNodes a and b
 */
-void swap(struct Node *a, struct Node *b);
+void swap(struct qNode *a, struct qNode *b);
 
 #endif

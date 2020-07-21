@@ -10,19 +10,18 @@ int initQueue(struct Queue *queue, int element_size)
 	return 0;
 }
 
-
-struct Node * createNode(void *element, int element_size)
+struct qNode * createqNode(void *element, int element_size)
 {
-	struct Node *new_node = (struct Node *)calloc(1, sizeof(struct Node));
+	struct qNode *new_qNode = (struct qNode *)calloc(1, sizeof(struct qNode));
 
-	if (new_node != NULL)
+	if (new_qNode != NULL)
 	{
-		new_node->data = calloc(1, element_size);
-		new_node->next = NULL;
-		memcpy(new_node->data, element, element_size);
+		new_qNode->data = calloc(1, element_size);
+		new_qNode->next = NULL;
+		memcpy(new_qNode->data, element, element_size);
 	}
 
-	return new_node;
+	return new_qNode;
 }
 
 
@@ -34,18 +33,18 @@ int isEmpty(struct Queue *queue)
 
 int enqueue(struct Queue *queue, void *element)
 {
-	struct Node *new_node = createNode(element, queue->element_size);
+	struct qNode *new_qNode = createqNode(element, queue->element_size);
 
-	if (new_node == NULL)
+	if (new_qNode == NULL)
 		return -1;
 
 	if (!isEmpty(queue))
 	{
-		queue->rear->next = new_node;
-		queue->rear = new_node;
+		queue->rear->next = new_qNode;
+		queue->rear = new_qNode;
 	}
 	else
-		queue->front = queue->rear = new_node;
+		queue->front = queue->rear = new_qNode;
 
 	queue->size++;
 
@@ -61,7 +60,7 @@ int dequeue(struct Queue *queue, void *target)
 
 	memcpy(target, queue->front->data, queue->element_size);
 
-	struct Node *tmp = queue->front;
+	struct qNode *tmp = queue->front;
 	queue->front = queue->front->next;
 	queue->size--;
 
@@ -73,16 +72,16 @@ int dequeue(struct Queue *queue, void *target)
 
 int destroy(struct Queue *queue)
 {
-	struct Node *current_node;
+	struct qNode *current_qNode;
 
 	while (queue->front != NULL)
 	{
-		current_node = queue->front;
+		current_qNode = queue->front;
 
-		queue->front = current_node->next;
+		queue->front = current_qNode->next;
 
-		free(current_node->data);
-		free(current_node);
+		free(current_qNode->data);
+		free(current_qNode);
 	}
 
 	return 0;
@@ -100,12 +99,12 @@ int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, co
 
 	for (int i = 0; i < length; i++)
 	{
-		struct Node *tmp = queue->front;
+		struct qNode *tmp = queue->front;
 		swapped = 0;
 
 		for (int j = 0; j < length - 1 - i; j++)
 		{
-			struct Node *n = tmp->next;
+			struct qNode *n = tmp->next;
 			
 			if (compare(tmp->data, n->data))
 			{
@@ -124,7 +123,7 @@ int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, co
 }
 
 
-void swap(struct Node *a, struct Node *b)
+void swap(struct qNode *a, struct qNode *b)
 {
 	void *tmp = a->data;
 	a->data = b->data;
