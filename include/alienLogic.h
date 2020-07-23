@@ -7,8 +7,8 @@
 #include <json-c/json.h>
 #include <math.h>
 #include <stdbool.h>
-//#include<pthread.h>
-
+#include<pthread.h>
+#include "linked_list.h"
 
 #define ALIEN_CONFIG_PAHT  "./files/Alientxt.json"
 #define MAXSTAGESIZE  10
@@ -30,13 +30,13 @@ typedef struct Alien{
     double find_y;
 
 } Alien;
-
-
-
+bool rectAlienCol(float x1,float y1, float x2, float y2);
+bool validateAlienCollision(float x1,float y1, Alien *alien, struct List *listaAliens);
+void loadRoute(Alien *alien);
 bool getNewPos(Alien *alien);
-void AlienWhile(Alien *alien);
-void* initAlien(void *arg);
-void   moveAlien(Alien *alien);
+void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens);
+void initAlien(Alien *alien,pthread_mutex_t  *lock,struct List *listaAliens);
+void moveAlien(Alien *alien);
 void * newAlien (void *arg);
 void readAlienConfig(int *alien_speed,double *alien_max_excec_time );
 
