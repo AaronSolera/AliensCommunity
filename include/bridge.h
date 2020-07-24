@@ -5,12 +5,13 @@
 #include <stdio.h>
 #include <time.h>
 #include <json-c/json.h>
-#include "queue.h"
-#include "alien.h"
+#include <queue.h>
+#include "alienLogic.h"
 
-#define WEST_BRIDGE_CONFIG_FILENAME 	"west_bridge_config.json"
-#define CENTRAL_BRIDGE_CONFIG_FILENAME  "central_bridge_config.json"
-#define EAST_BRIDGE_CONFIG_FILENAME  	"east_bridge_config.json"
+
+#define WEST_BRIDGE_CONFIG_FILENAME 	"./files/west_bridge_config.json"
+#define CENTRAL_BRIDGE_CONFIG_FILENAME  "./files/central_bridge_config.json"
+#define EAST_BRIDGE_CONFIG_FILENAME  	"./files/east_bridge_config.json"
 
 #define ROUND_ROBIN 						0
 #define PRIORITY							1
@@ -18,7 +19,7 @@
 #define LOTTERY								3
 #define FIFO 								4
 
-#define Y 									0
+#define Y_A 								0
 #define SEMAPHORES							1
 #define SURVIVAL							2
 
@@ -42,9 +43,9 @@ struct Bridge
 
 void initBridge(struct Bridge *bridge, const char *filename);
 
-void insertAlienInNorth(struct Bridge *bridge, struct Alien *alien);
+void insertAlienInNorth(struct Bridge *bridge,  Alien *alien);
 
-void insertAlienInSouth(struct Bridge *bridge, struct Alien *alien);
+void insertAlienInSouth(struct Bridge *bridge,  Alien *alien);
 
 void sortBridgeSide(struct Bridge *bridge, struct Queue **queue);
 

@@ -1,4 +1,4 @@
-#include "bridge.h"
+#include "../include/bridge.h"
 
 void initBridge(struct Bridge *bridge, const char *filename)
 {
@@ -43,16 +43,16 @@ void initBridge(struct Bridge *bridge, const char *filename)
 	bridge->aliens_crossing = 0;
 
 	bridge->north_aliens_queue = calloc(1, sizeof(struct Queue));
-	initQueue(bridge->north_aliens_queue, sizeof(struct Alien));
+	initQueue(bridge->north_aliens_queue, sizeof( Alien *));
 	
 	bridge->south_aliens_queue = calloc(1, sizeof(struct Queue));
-	initQueue(bridge->south_aliens_queue, sizeof(struct Alien));
+	initQueue(bridge->south_aliens_queue, sizeof( Alien *));
 }
 
 
-void insertAlienInNorth(struct Bridge *bridge, struct Alien *alien)
+void insertAlienInNorth(struct Bridge *bridge, Alien *alien)
 {
-	enqueue(bridge->north_aliens_queue, alien);
+	enqueue(bridge->north_aliens_queue, &alien);
 
 	if ((bridge->scheduling_algorithm == PRIORITY || bridge->scheduling_algorithm == SJF) && 
 		 bridge->north_aliens_queue->size <= bridge->ordered_aliens_per_side)
@@ -60,9 +60,9 @@ void insertAlienInNorth(struct Bridge *bridge, struct Alien *alien)
 }
 
 
-void insertAlienInSouth(struct Bridge *bridge, struct Alien *alien)
+void insertAlienInSouth(struct Bridge *bridge, Alien *alien)
 {
-	enqueue(bridge->south_aliens_queue, alien);
+	enqueue(bridge->south_aliens_queue, &alien);
 
 	if ((bridge->scheduling_algorithm == PRIORITY || bridge->scheduling_algorithm == SJF) && 
 		 bridge->south_aliens_queue->size <= bridge->ordered_aliens_per_side)
@@ -75,11 +75,11 @@ void sortBridgeSide(struct Bridge *bridge, struct Queue **queue)
 	switch (bridge->scheduling_algorithm)
 	{
 		case PRIORITY:
-			bubbleSort2(*queue, bridge->ordered_aliens_per_side, priority);
+			//bubbleSort2(*queue, bridge->ordered_aliens_per_side, priority);
 			break;
 
 		case SJF:
-			bubbleSort3(*queue, bridge->ordered_aliens_per_side, shortestJobFirst, (const void *)bridge);
+			//bubbleSort3(*queue, bridge->ordered_aliens_per_side, shortestJobFirst, (const void *)bridge);
 			break;
 
 		default:
@@ -90,8 +90,8 @@ void sortBridgeSide(struct Bridge *bridge, struct Queue **queue)
 
 int priority(const void *a, const void *b)
 {
-	int alien1_priority = ((struct Alien *)a)->priority;
-	int alien2_priority = ((struct Alien *)b)->priority;
+	int alien1_priority = (( Alien *)a)->priority;
+	int alien2_priority = (( Alien *)b)->priority;
 
 	return alien1_priority > alien2_priority;
 }

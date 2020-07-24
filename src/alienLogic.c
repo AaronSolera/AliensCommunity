@@ -264,7 +264,6 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
 
 
 void initAlien(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
-    //Alien* alien = (Alien *) arg;
     alien->speed         = 0.3;
     alien->type          = 1;
     alien->dir           = 1;
@@ -274,6 +273,8 @@ void initAlien(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
     alien->route         = 0; 
     alien->cond          = 1;
     alien->stage         = 0;
+    alien->queue         = 0;
+    alien->isSelected    = 0;
     loadRoute(alien);
     alien->pos_x         = alien->route_x[0];
     alien->pos_y         = alien->route_y[0];

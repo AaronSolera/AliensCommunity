@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include<pthread.h>
 #include "linked_list.h"
+//include "bridge.h"
+
 
 #define ALIEN_CONFIG_PAHT  "./files/Alientxt.json"
 #define MAXSTAGESIZE  10
@@ -28,6 +30,8 @@ typedef struct Alien{
 	int route_y[MAXSTAGESIZE];
 	double find_x;
     double find_y;
+    int queue;
+    int isSelected;
 
 } Alien;
 bool rectAlienCol(float x1,float y1, float x2, float y2);

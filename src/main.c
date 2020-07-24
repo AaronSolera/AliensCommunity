@@ -13,10 +13,11 @@
 #include <unistd.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
-#include "alienLogic.h"
+#include "../include/alienLogic.h"
 #include <pthread.h>
 #include <stdbool.h>
 #include "linked_list.h"
+#include "../include/bridge.h"
 //#include <json-c/json.h>
 
 #define WIDTH 1080
@@ -49,6 +50,8 @@ pthread_mutex_t lock;
 
 struct List *listaAliens;
 
+
+
 void* thread_alien(void *arg){
 	Alien *alien = (Alien *) arg;
     initAlien(alien,&lock,listaAliens);
@@ -76,6 +79,9 @@ bool detectColition(float x1,float y1, int ancho1, int alto1, float x2, float y2
 int main(int argc, char *argv[])
 {
 
+	struct Bridge east_bridge ;
+	struct Bridge center_bridge ;
+	struct Bridge west_bridge ;
 	//Create alien structure
 	//pthread_t hilo;
     //char * alien_type = "n";
@@ -85,6 +91,9 @@ int main(int argc, char *argv[])
 	int mouse_timer     = 0;
 	int cant_alien      = 0;
 	
+	initBridge(&east_bridge,EAST_BRIDGE_CONFIG_FILENAME);
+	initBridge(&center_bridge,CENTRAL_BRIDGE_CONFIG_FILENAME);
+	initBridge(&west_bridge,WEST_BRIDGE_CONFIG_FILENAME);
 
 	//create new alien
 	listaAliens = createList(sizeof(Alien *));
@@ -225,15 +234,42 @@ int main(int argc, char *argv[])
 				getAt(listaAliens,cant_alien,(void *) &alien_to_show);
 				al_draw_bitmap_region(Image,movimiento*20,0,20,20,alien_to_show->pos_x,alien_to_show->pos_y,0);
 
-				//if(alien_to_show->stage != 3){
+				if(alien_to_show->stage != 5){
 					pthread_mutex_lock(&lock);
 					alien_to_show->cond = 1;
 					pthread_mutex_unlock(&lock);
-				//}else{
-				//	alien_to_show->pos_x = 100;
-				//	alien_to_show->pos_y = 100;
+				}else{
+					///add to the queue
+					if(!alien_to_show->queue){
+						alien_to_show->queue = 1;
+						if(alien_to_show->route == 0){
+							insertAlienInNorth(&east_bridge,alien_to_show);
+						}
+						if(alien_to_show->route == 1){
+							insertAlienInNorth(&center_bridge,alien_to_show);
+						}
+						if(alien_to_show->route == 2){
+							insertAlienInNorth(&west_bridge,alien_to_show);
+						}
+						if(alien_to_show->route == 3){
+							insertAlienInSouth(&east_bridge,alien_to_show);
+
+						}
+						if(alien_to_show->route == 4){
+							insertAlienInSouth(&center_bridge,alien_to_show);
+						}
+						if(alien_to_show->route == 5){
+							insertAlienInSouth(&west_bridge,alien_to_show);
+						}
+					}
+					if(alien_to_show->isSelected){
+						alien_to_show->cond = 1;
+					}
+
+					alien_to_show->pos_x = 200;
+					alien_to_show->pos_y = 200;
 					//nachosFunc();
-				//}
+				}
 				cant_alien++;
 
 			}
