@@ -1,12 +1,5 @@
 /*
- * This program uses the Allegro game library to display a blank window.
  *
- * It initializes the display and starts up the main game loop. The
- * game loop only checks for two events: timer (determined by the FPS)
- * and display close (when the user tries to close the window).
- * 
- * Original non-available link http://www.damienradtke.org/building-a-mario-clone-with-allegro
- * Referenced by dradtke at https://gist.github.com/dradtke/2494024
  */
 
 #include <stdio.h>
@@ -26,6 +19,7 @@
 #define imgAlienBeta   "imgAlien1.png"
 #define imgAlienAlfa   "imgAlien2.png"
 #define imgCastle      "imgCastle.png"
+#define imgMode        "imgmode.png"
 
 #define CASTLE0_X 30
 #define CASTLE0_Y 30
@@ -43,6 +37,8 @@
 #define BTN4_Y 550
 #define BTN5_X 1010
 #define BTN5_Y 550
+#define BTNMODE_X 520
+#define BTNMODE_Y 10
 const float FPS = 60;
 
 
@@ -58,8 +54,16 @@ void* thread_alien(void *arg){
 }
 
 
-Alien* create_alien(){
+Alien* create_alien(int type){
 	Alien *alien = (Alien *) malloc(sizeof(Alien));
+	alien->type          = type % 3;
+	int numero = rand() % 3; 
+	printf("%d",numero);
+	if(type < 3){
+		alien->route         = numero;
+	}else if(type < 6){
+		alien->route         = numero + 3;
+	}
 	pthread_t hilo;
 	pthread_create(&hilo,NULL,&thread_alien,(void *) alien);
 	sleep (0.01);
@@ -73,6 +77,19 @@ Alien* create_alien(){
 
 bool detectColition(float x1,float y1, int ancho1, int alto1, float x2, float y2,int ancho2,int alto2){
 	return ((y1 <= y2 + alto2)&&(y2<= y1 +alto1)&&(x1 <= x2+ancho2)&&(x2<= x1 +ancho1));
+}
+
+void detectButtonPresed(int mouse_x,int mouse_y, int *game_mode){
+	if(!(*game_mode)){
+		if(detectColition(BTN0_X,BTN0_Y,20,20,mouse_x,mouse_y,0,0))   create_alien(0);
+		if(detectColition(BTN1_X,BTN1_Y,20,20,mouse_x,mouse_y,0,0))   create_alien(1);
+		if(detectColition(BTN2_X,BTN2_Y,20,20,mouse_x,mouse_y,0,0))   create_alien(2);
+		if(detectColition(BTN3_X,BTN3_Y,20,20,mouse_x,mouse_y,0,0))   create_alien(3);
+		if(detectColition(BTN4_X,BTN4_Y,20,20,mouse_x,mouse_y,0,0))   create_alien(4);
+		if(detectColition(BTN5_X,BTN5_Y,20,20,mouse_x,mouse_y,0,0))   create_alien(5);
+	}
+	if(detectColition(BTNMODE_X,BTNMODE_Y,40,40,mouse_x,mouse_y,0,0))
+		(*game_mode) = ((* game_mode) + 1) % 2;
 }
 
 
@@ -90,6 +107,7 @@ int main(int argc, char *argv[])
 	int contador        = 0;
 	int mouse_timer     = 0;
 	int cant_alien      = 0;
+	int game_mode       = 0;
 	
 	initBridge(&east_bridge,EAST_BRIDGE_CONFIG_FILENAME);
 	initBridge(&center_bridge,CENTRAL_BRIDGE_CONFIG_FILENAME);
@@ -97,12 +115,8 @@ int main(int argc, char *argv[])
 
 	//create new alien
 	listaAliens = createList(sizeof(Alien *));
-	Alien * alien = create_alien();
 	Alien * alien_to_show;
 	
-	//Alien *alien = (Alien *) malloc(sizeof(Alien));
-	//pthread_t hilo;
-	//pthread_create(&hilo,NULL,&initAlien,(void *) alien);
 
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
@@ -112,6 +126,8 @@ int main(int argc, char *argv[])
 	ALLEGRO_BITMAP *Image2 = NULL;
 	ALLEGRO_BITMAP *Image3 = NULL;
 	ALLEGRO_BITMAP *ImageCastle = NULL;
+	ALLEGRO_BITMAP *ImageMode = NULL;
+	
 	bool running = true;
 	bool redraw = true;
 
@@ -131,6 +147,7 @@ int main(int argc, char *argv[])
 	Image2 = al_load_bitmap(imgAlienBeta);
 	Image3 = al_load_bitmap(imgAlienAlfa);
 	ImageCastle = al_load_bitmap(imgCastle);
+	ImageMode   = al_load_bitmap(imgMode);
 	//if image is null finish the program 
 	assert(Image != NULL);
 
@@ -204,10 +221,10 @@ int main(int argc, char *argv[])
 		if(mouse_timer == 0){
 			al_get_mouse_state(&state);
 			if (state.buttons & 1) {
-			    /* Primary (e.g. left) mouse button is held. */
 			    printf("Mouse position: (%d, %d)\n", state.x, state.y);
+			    detectButtonPresed(state.x,state.y,&game_mode);
 			    mouse_timer = 30;
-			    create_alien();
+			    //create_alien();
 			}
 		}
 		
@@ -220,24 +237,31 @@ int main(int argc, char *argv[])
 				contador = 0;
 			}
 			contador += 1;
+			
 			al_clear_to_color(al_map_rgb(50, 50, 50));
-			//al_draw_bitmap(Image, 0, 0, 0);
-			//al_draw_bitmap(Image, 10, 10, 0);
 
-			//hilo principal que controla el movimiento
+			if(game_mode == 0)
+				al_draw_bitmap_region(ImageMode,0,40,40,40,BTNMODE_X,BTNMODE_Y,0);
+			else
+				al_draw_bitmap_region(ImageMode,0,0,40,40,BTNMODE_X,BTNMODE_Y,0);
 			
-			
-			//free(alito);
+
 			cant_alien = 0;
+			pthread_mutex_lock(&lock);
 			while(cant_alien < listaAliens->length){
-				 
 				getAt(listaAliens,cant_alien,(void *) &alien_to_show);
-				al_draw_bitmap_region(Image,movimiento*20,0,20,20,alien_to_show->pos_x,alien_to_show->pos_y,0);
+				if(alien_to_show->type == 0){
+					al_draw_bitmap_region(Image,movimiento*20,0,20,20,alien_to_show->pos_x,alien_to_show->pos_y,0);
+				}
+				if(alien_to_show->type == 1){
+					al_draw_bitmap_region(Image2,movimiento*20,0,20,20,alien_to_show->pos_x,alien_to_show->pos_y,0);
+				}
+				if(alien_to_show->type == 2){
+					al_draw_bitmap_region(Image3,movimiento*20,0,20,20,alien_to_show->pos_x,alien_to_show->pos_y,0);
+				}
 
 				if(alien_to_show->stage != 5){
-					pthread_mutex_lock(&lock);
 					alien_to_show->cond = 1;
-					pthread_mutex_unlock(&lock);
 				}else{
 					///add to the queue
 					if(!alien_to_show->queue){
@@ -271,8 +295,8 @@ int main(int argc, char *argv[])
 					//nachosFunc();
 				}
 				cant_alien++;
-
 			}
+			pthread_mutex_unlock(&lock);
 			//Draw buttoms
 			al_draw_bitmap_region(Image,60,40,20,20,BTN0_X, BTN0_Y, 0);
 			al_draw_bitmap_region(Image2,60,40,20,20,BTN1_X, BTN1_Y, 0);
@@ -287,9 +311,8 @@ int main(int argc, char *argv[])
 			al_draw_bitmap(ImageCastle, CASTLE1_X, CASTLE1_Y, ALLEGRO_FLIP_HORIZONTAL);
 
 
-			al_draw_bitmap_region(Image,0,0,20,20,930,650,0);
-			//al_draw_bitmap_region(Image,movimiento*20,0,20,20,alien->pos_x,alien->pos_y,0);
-			//indique que se mueva
+			//al_draw_bitmap_region(Image,0,0,20,20,930,650,0);
+			
 			
 
 			
@@ -309,8 +332,7 @@ int main(int argc, char *argv[])
 	al_destroy_bitmap(Image2);
 	al_destroy_bitmap(Image3);
 	al_destroy_bitmap(ImageCastle);
-	free(alien);
-	//al_destroy_path(path);
+	al_destroy_bitmap(ImageMode);
 
 	return 0;
 }

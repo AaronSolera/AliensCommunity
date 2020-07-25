@@ -265,12 +265,10 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
 
 void initAlien(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
     alien->speed         = 0.3;
-    alien->type          = 1;
     alien->dir           = 1;
     alien->priority      = 3;
     alien->weight        = 3;
-    alien->max_exec_time = 5;
-    alien->route         = 0; 
+    alien->max_exec_time = 5; 
     alien->cond          = 1;
     alien->stage         = 0;
     alien->queue         = 0;
