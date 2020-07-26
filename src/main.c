@@ -66,12 +66,12 @@ Alien* create_alien(int type){
 	}
 	pthread_t hilo;
 	pthread_create(&hilo,NULL,&thread_alien,(void *) alien);
-	sleep (0.01);
+	//sleep (0.01);
 	addLast(listaAliens,&alien);
-	Alien *alito;
-	printf("%d\n", listaAliens->length);
-	getAt(listaAliens,0,(void *) &alito);
-	printf("%f\n",alito->pos_x);
+	//Alien *alito;
+	//printf("%d\n", listaAliens->length);
+	//getAt(listaAliens,0,(void *) &alito);
+	//printf("%f\n",alito->pos_x);
 	return alien;
 }
 
@@ -91,7 +91,19 @@ void detectButtonPresed(int mouse_x,int mouse_y, int *game_mode){
 	if(detectColition(BTNMODE_X,BTNMODE_Y,40,40,mouse_x,mouse_y,0,0))
 		(*game_mode) = ((* game_mode) + 1) % 2;
 }
-
+void eliminarAlien(int mouse_x,int mouse_y){
+	int cantidad = 0;
+	Alien *alien_to_delete;
+	while(cantidad < listaAliens->length){
+		getAt(listaAliens,cantidad,(void *) &alien_to_delete);
+		if(detectColition(alien_to_delete->pos_x,alien_to_delete->pos_y, 20, 20, mouse_x, mouse_y,0,0)){
+			alien_to_delete->stage = 9;
+			removeAt(listaAliens,cantidad);
+		}
+		cantidad ++;
+	}
+	//removeAt
+}
 
 int main(int argc, char *argv[])
 {
@@ -224,7 +236,9 @@ int main(int argc, char *argv[])
 			    printf("Mouse position: (%d, %d)\n", state.x, state.y);
 			    detectButtonPresed(state.x,state.y,&game_mode);
 			    mouse_timer = 30;
-			    //create_alien();
+			    pthread_mutex_lock(&lock);
+			    eliminarAlien(state.x,state.y);
+			    pthread_mutex_unlock(&lock);
 			}
 		}
 		
@@ -309,11 +323,6 @@ int main(int argc, char *argv[])
 			//draw castle
 			al_draw_bitmap(ImageCastle, CASTLE0_X, CASTLE0_Y, 0);
 			al_draw_bitmap(ImageCastle, CASTLE1_X, CASTLE1_Y, ALLEGRO_FLIP_HORIZONTAL);
-
-
-			//al_draw_bitmap_region(Image,0,0,20,20,930,650,0);
-			
-			
 
 			
 			if(mouse_timer != 0){

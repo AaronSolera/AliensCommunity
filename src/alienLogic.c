@@ -1,35 +1,6 @@
 #include "../include/alienLogic.h"
 
-
-/*Investigación sobre hilos 
-*pthread yield cede el procesador y otro hilo toma su puesto. El hilo es puesto al final de la cola de ejecución
-*
-*int pthread_join(pthread_t thread, void **retval);
-*Espera por el hilo especificado. hasta que termine.
-*
-*int pthread_detach(pthread_t thread);
-*marca el hilo identificado por un hilo como separado.
-*/
-/*
-typedef struct Alien{
-    float speed; 
-    int type;
-    float pos_x;
-    float pos_y;
-    int dir;
-    int priority;
-    int weight;
-    double max_exec_time;
-    int route;
-    int cond;
-    int stage;
-    int route_x[MAXSTAGESIZE];  
-    int route_y[MAXSTAGESIZE];
-    double find_x;
-    double find_y;
-
-} Alien;*/
-
+//this 
 bool rectAlienCol(float x1,float y1, float x2, float y2){
     if((y1 <= y2 + 20)&&(y2 <= y1 +20)&&(x1 <= x2+20)&&(x2<= x1 +20)){
         return 1;
@@ -215,6 +186,9 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
     
     while(moveAlien){
         pthread_mutex_lock(lock);
+        if(alien->stage == 9){
+            moveAlien = 0;
+        }
         //pthread_mutex_trylock(pthread_mutex_t * mutex);
         if(alien->cond==1){
             if(fabs(alien->pos_x -alien->find_x)<alien->speed){
@@ -259,6 +233,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
         pthread_mutex_unlock(lock);
         sleep(0.5);
     }
+    printf("Hilo eliminado.....");
     
 }
 
