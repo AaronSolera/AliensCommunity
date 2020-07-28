@@ -337,7 +337,7 @@ int main(int argc, char *argv[])
 					break;
 			}
 		}
-		
+
 		if(mouse_timer == 0){
 			al_get_mouse_state(&state);
 			if (state.buttons & 1) {
@@ -349,7 +349,6 @@ int main(int argc, char *argv[])
 				    lthread_mutex_trylock(&lock);
 				    eliminarAlien(state.x,state.y);
 				    lthread_mutex_unlock(&lock);
-				    printf("hola\n");
 					}
 			}
 

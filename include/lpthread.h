@@ -13,7 +13,7 @@
 #include<sys/time.h>
 
 #define STACK_SIZE 512 * 1024
-#define QUANTUM 10000
+#define QUANTUM 2000
 
 #define RUNNING 	0
 #define ZOMBIE 		2
