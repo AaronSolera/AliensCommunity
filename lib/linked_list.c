@@ -281,3 +281,81 @@ void printList(struct List *list, void (*printElement)(const void *a))
         tmp = tmp->next; 
     } 
 }
+
+int bubbleSort3(struct List *queue, int length, int (*compare)(const void *a, const void *b, const void *c), const void *c)
+{
+	if (isListEmpty(queue))
+		return -1;
+
+	if (length > queue->length)
+		length = queue->length;
+
+	int swapped;
+
+	for (int i = 0; i < length; i++)
+	{
+		struct lNode *tmp = queue->head;
+		swapped = 0;
+
+		for (int j = 0; j < length - 1 - i; j++)
+		{
+			struct lNode *n = tmp->next;
+			
+			if (compare(tmp->data, n->data, c))
+			{
+				swap(tmp, n);
+				swapped = 1;
+			}
+
+			tmp = tmp->next;
+		}
+
+		if (swapped == 0)
+			break;
+	}
+
+	return 0;
+}
+
+
+int bubbleSort2(struct List *queue, int length, int (*compare)(const void *a, const void *b))
+{
+	if (isListEmpty(queue))
+		return -1;
+
+	if (length > queue->length)
+		length = queue->length;
+
+	int swapped;
+
+	for (int i = 0; i < length; i++)
+	{
+		struct lNode *tmp = queue->head;
+		swapped = 0;
+
+		for (int j = 0; j < length - 1 - i; j++)
+		{
+			struct lNode *n = tmp->next;
+			
+			if (compare(tmp->data, n->data))
+			{
+				swap(tmp, n);
+				swapped = 1;
+			}
+
+			tmp = tmp->next;
+		}
+
+		if (swapped == 0)
+			break;
+	}
+
+	return 0;
+}
+
+void swap(struct lNode *a, struct lNode *b)
+{
+	void *tmp = a->data;
+	a->data = b->data;
+	b->data = tmp;
+}

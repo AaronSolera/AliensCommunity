@@ -64,6 +64,11 @@ int clear(struct List *list);
 
 int destroyList(struct List *list);
 
+int bubbleSort2(struct List *list, int length, int (*compare)(const void *a, const void *b));
+
+int bubbleSort3(struct List *list, int length, int (*compare)(const void *a, const void *b, const void *c), const void *c);
+
+void swap(struct lNode *a, struct lNode *b);
 
 void printList(struct List *list, void (*printElement)(const void *a));
 

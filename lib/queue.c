@@ -87,52 +87,10 @@ int destroy(struct Queue *queue)
 	return 0;
 }
 
-int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, const void *b))
-{
-	if (isEmpty(queue))
-		return -1;
-
-	if (length > queue->size)
-		length = queue->size;
-
-	int swapped;
-
-	for (int i = 0; i < length; i++)
-	{
-		struct qNode *tmp = queue->front;
-		swapped = 0;
-
-		for (int j = 0; j < length - 1 - i; j++)
-		{
-			struct qNode *n = tmp->next;
-			
-			if (compare(tmp->data, n->data))
-			{
-				swap(tmp, n);
-				swapped = 1;
-			}
-
-			tmp = tmp->next;
-		}
-
-		if (swapped == 0)
-			break;
-	}
-
-	return 0;
-}
-
 void deenQueue(struct Queue *queue){
 	struct qNode * temp = queue->front->next;
 	queue->rear->next = queue->front;
 	queue->front->next = NULL;
 	queue->rear = queue->front;
 	queue->front = temp;
-}
-
-void swap(struct qNode *a, struct qNode *b)
-{
-	void *tmp = a->data;
-	a->data = b->data;
-	b->data = tmp;
 }

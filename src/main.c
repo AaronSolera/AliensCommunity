@@ -217,9 +217,7 @@ void colocarMapa(){
 int main(int argc, char *argv[])
 {
 
-	struct Bridge east_bridge ;
-	struct Bridge center_bridge ;
-	struct Bridge west_bridge ;
+	struct Bridge east_bridge, center_bridge, west_bridge;
 
     //
 	int movimiento      = 0;
@@ -276,10 +274,6 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Failed to create timer.\n");
 		return 1;
 	}
-	
-
-
-
 
 	display = al_create_display(WIDTH, HEIGHT);
 	if (!display) {
@@ -306,9 +300,6 @@ int main(int argc, char *argv[])
 
 	// Start the timer
 	al_start_timer(timer);
-
-	
-	
 
 	float x = 0;
 	// Game loop *********************************************************************************************
@@ -351,7 +342,6 @@ int main(int argc, char *argv[])
 				    lthread_mutex_unlock(&lock);
 					}
 			}
-
 		}
 		
 
@@ -393,9 +383,9 @@ int main(int argc, char *argv[])
 					al_draw_bitmap_region(Image3,movimiento*20,0,20,20,alien_to_show->pos_x,alien_to_show->pos_y,0);
 				}
 
-				//if(alien_to_show->stage != 5){
+				if(alien_to_show->stage != 5){
 					alien_to_show->cond = 1;
-				/*}else{
+				}else{
 					///add to the queue
 					if(!alien_to_show->queue){
 						alien_to_show->queue = 1;
@@ -423,10 +413,7 @@ int main(int argc, char *argv[])
 						alien_to_show->cond = 1;
 					}
 				
-					alien_to_show->pos_x = 200;
-					alien_to_show->pos_y = 200;
-					//nachosFunc();
-				}*/
+				}
 				cant_alien++;
 			}
 			lthread_mutex_unlock(&lock);
@@ -448,10 +435,14 @@ int main(int argc, char *argv[])
 				mouse_timer --;
 			}
 			
-
 			al_flip_display();
 			redraw = false;
 		}
+
+		//Manage the traffic on bridges
+		manageTraffic(&east_bridge);
+		manageTraffic(&center_bridge);
+		manageTraffic(&west_bridge);
 	} 
 
 	// Clean up

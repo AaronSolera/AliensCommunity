@@ -50,16 +50,6 @@ int dequeue(struct Queue *queue, void *target);
 int destroy(struct Queue *queue);
 
 /*
-	Function to sort a queue using Bubble Sort algorithm
-*/
-int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, const void *b));
-
-/*
-	Function to swap data of two qNodes a and b
-*/
-void swap(struct qNode *a, struct qNode *b);
-
-/*
 	Function this function put front to queque
 */
 void deenQueue(struct Queue *queue);
