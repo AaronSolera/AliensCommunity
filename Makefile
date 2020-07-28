@@ -2,7 +2,7 @@ CC = gcc
 MAKE_STATIC_LIB = ar rv
 ALLEGRO_FLAGS = -lallegro -lallegro_image -lallegro_primitives
 JSON_FLAGS = -ljson-c
-LIB_FLAGS = -llpthread -lqueue -llinked_list
+LIB_FLAGS = -llpthread -lqueue -llinked_list -lsteque
 LIB = cd ./lib &&
 RM_O = cd ./lib && rm *.o
 
@@ -11,7 +11,7 @@ RM_O = cd ./lib && rm *.o
 all: allegro json main
 	$(RM_O)
 
-main: liblpthread.a libqueue.a liblinked_list.a
+main: liblpthread.a libqueue.a liblinked_list.a libsteque.a
 	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
 	
 liblpthread.a: lpthread.o
@@ -31,6 +31,12 @@ libqueue.a: queue.o
 
 queue.o: ./lib/queue.c
 	$(LIB) $(CC) -c queue.c
+
+libsteque.a: steque.o
+	$(LIB) $(MAKE_STATIC_LIB) libsteque.a steque.o
+
+steque.o: ./lib/steque.c
+	$(LIB) $(CC) -c steque.c
 
 allegro:
 	sudo apt-get install liballegro5-dev

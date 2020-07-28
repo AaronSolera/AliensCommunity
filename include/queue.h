@@ -59,4 +59,9 @@ int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, co
 */
 void swap(struct qNode *a, struct qNode *b);
 
+/*
+	Function this function put front to queque
+*/
+void deenQueue(struct Queue *queue);
+
 #endif

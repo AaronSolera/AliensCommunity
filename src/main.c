@@ -7,7 +7,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include "../include/alienLogic.h"
-#include <pthread.h>
+#include <lpthread.h>
 #include <stdbool.h>
 #include "linked_list.h"
 #include "../include/bridge.h"
@@ -51,7 +51,7 @@
 const float FPS = 60;
 
 
-pthread_mutex_t lock; 
+lthread_mutex_t lock; 
 
 struct List *listaAliens;
 	//define bitmaps
@@ -108,8 +108,8 @@ Alien* create_alien(int type){
 	}else if(type < 6){
 		alien->route         = numero + 3;
 	}
-	pthread_t hilo;
-	pthread_create(&hilo,NULL,&thread_alien,(void *) alien);
+	lthread_t hilo;
+	lthread_create(&hilo,NULL,&thread_alien,(void *) alien);
 	addLast(listaAliens,&alien);
 
 	return alien;
@@ -337,6 +337,7 @@ int main(int argc, char *argv[])
 					break;
 			}
 		}
+		
 		if(mouse_timer == 0){
 			al_get_mouse_state(&state);
 			if (state.buttons & 1) {
@@ -345,9 +346,9 @@ int main(int argc, char *argv[])
 				}else{
 				    detectButtonPresed(state.x,state.y,&game_mode);
 				    mouse_timer = 30;
-				    pthread_mutex_lock(&lock);
+				    lthread_mutex_trylock(&lock);
 				    eliminarAlien(state.x,state.y);
-				    pthread_mutex_unlock(&lock);
+				    lthread_mutex_unlock(&lock);
 				    printf("hola\n");
 					}
 			}
@@ -364,9 +365,9 @@ int main(int argc, char *argv[])
 			if(contador == 60){
 				movimiento = (movimiento+1)%4;
 				contador = 0;
-				pthread_mutex_lock(&lock);
+				lthread_mutex_trylock(&lock);
 				rtos_fin = reducirSegundo();
-				pthread_mutex_unlock(&lock);
+				lthread_mutex_unlock(&lock);
 			}
 			contador += 1;
 			
@@ -380,7 +381,7 @@ int main(int argc, char *argv[])
 			
 
 			cant_alien = 0;
-			pthread_mutex_lock(&lock);
+			lthread_mutex_trylock(&lock);
 			while(cant_alien < listaAliens->length){
 				getAt(listaAliens,cant_alien,(void *) &alien_to_show);
 				if(alien_to_show->type == 0){
@@ -429,7 +430,7 @@ int main(int argc, char *argv[])
 				}*/
 				cant_alien++;
 			}
-			pthread_mutex_unlock(&lock);
+			lthread_mutex_unlock(&lock);
 			//Draw buttoms
 			al_draw_bitmap_region(Image,60,40,20,20,BTN0_X, BTN0_Y, 0);
 			al_draw_bitmap_region(Image2,60,40,20,20,BTN1_X, BTN1_Y, 0);

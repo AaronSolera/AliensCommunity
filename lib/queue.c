@@ -122,6 +122,13 @@ int bubbleSort(struct Queue *queue, int length, int (*compare)(const void *a, co
 	return 0;
 }
 
+void deenQueue(struct Queue *queue){
+	struct qNode * temp = queue->front->next;
+	queue->rear->next = queue->front;
+	queue->front->next = NULL;
+	queue->rear = queue->front;
+	queue->front = temp;
+}
 
 void swap(struct qNode *a, struct qNode *b)
 {

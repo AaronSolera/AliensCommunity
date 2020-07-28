@@ -12,7 +12,7 @@ typedef struct {
   steque_node_t* front;
   steque_node_t* back;
   int N;
-}steque_t;
+} steque_t;
 
 
 /* Initializes the data structure */

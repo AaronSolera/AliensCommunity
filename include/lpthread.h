@@ -12,7 +12,7 @@
 #include<sys/types.h>
 #include<sys/time.h>
 
-#define STACK_SIZE 1024 * 1024
+#define STACK_SIZE 512 * 1024
 #define QUANTUM 10000
 
 #define RUNNING 	0
@@ -27,6 +27,12 @@
 *	https://courses.engr.illinois.edu/cs423/sp2011/mps/mp3/mp3.pdf
 *	https://pages.mtu.edu/~shene/PUBLICATIONS/1999/fie99-mtp.pdf
 *	http://web.eecs.umich.edu/~farnam/482/Winter99/pa2-v3.html
+*/
+
+/*  
+*   GTThread--A User Level Thread Library
+*   This library is a modification obtained at the website https://github.com/LancelotGT/gtthread
+*   Creator: Ning Wang. Nov 23th, 2019.
 */
 
 typedef unsigned long int lthread_t;
