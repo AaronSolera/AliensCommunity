@@ -1,6 +1,12 @@
 #ifndef STEQUE_H
 #define STEQUE_H
 
+/*  
+*   GTThread--A User Level Thread Library
+*   This library is a modification obtained at the website https://github.com/LancelotGT/gtthread
+*   Creator: Ning Wang. Nov 23th, 2019.
+*/
+
 typedef void* steque_item;
 
 typedef struct steque_node_t{
@@ -12,7 +18,7 @@ typedef struct {
   steque_node_t* front;
   steque_node_t* back;
   int N;
-}steque_t;
+} steque_t;
 
 
 /* Initializes the data structure */

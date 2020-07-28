@@ -1,10 +1,17 @@
 {
-    "length"                    : 50,
-    "capacity"                    : 10,
-    "transit_control_algorithm" :  0,
-    "scheduling_algorithm"         :  0,
-    "ordered_aliens_per_side"    :  5,
-    "Y"                            :  2,
-    "M"                            :  3,
-    "N"                            :  3,
+    "length"                    	: 10,
+
+    "capacity"                    	:  1,
+
+    "transit_control_algorithm" 	:  2,
+
+    "scheduling_algorithm"        	:  4,
+
+    "ordered_aliens_per_side"    	:  5,
+
+    "Y"                            	:  1,
+
+    "M"                            	:  10,
+
+    "N"                            	:  10,
 }

@@ -6,13 +6,12 @@
 #include <unistd.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
-#include "../include/alienLogic.h"
-#include <pthread.h>
+#include "../include/alienLogic_lthread.h"
+#include <lpthread.h>
 #include <stdbool.h>
 #include "linked_list.h"
 #include "../include/bridge.h"
 #include <allegro5/allegro_primitives.h>
-#include <math.h>
 //#include <json-c/json.h>
 
 #define WIDTH 1080
@@ -52,7 +51,7 @@
 const float FPS = 60;
 
 
-pthread_mutex_t lock; 
+lthread_mutex_t lock; 
 
 struct List *listaAliens;
 	//define bitmaps
@@ -63,26 +62,7 @@ struct List *listaAliens;
 	ALLEGRO_BITMAP *ImageMode = NULL;
 	ALLEGRO_BITMAP *ImageSiNo = NULL;
 	ALLEGRO_BITMAP *ImageContinuar = NULL;
-/*int calcSegundosToCreateAlien(){
-	double total;
-	//asumiendo que quiero tener "de 20 a 140" fallos por cada 600 segundos la formula que se implementa es: 
-	int randito = rand() % 120 +20;
 
-	total       = (1 - pow (.7182,-(randito/600)*5))*5;
-	printf("%f\n",total);
-	randito     = floor(total);
-	randito    = fabs(randito);
-	
-	return randito;
-}*/
-
-int calcSegundosToCreateAlien(double x) {
-	double r = rand() / (RAND_MAX + 1.0);
-	double res = (-log(1 - r) / x)*x*2;
-	int result = floor(res);
-	printf("%d\n",result);
-	return result;
-}
 
 void continuar(){
 	al_clear_to_color(al_map_rgb(100, 100, 100));
@@ -128,8 +108,8 @@ Alien* create_alien(int type){
 	}else if(type < 6){
 		alien->route         = numero + 3;
 	}
-	pthread_t hilo;
-	pthread_create(&hilo,NULL,&thread_alien,(void *) alien);
+	lthread_t hilo;
+	lthread_create(&hilo,NULL,&thread_alien,(void *) alien);
 	addLast(listaAliens,&alien);
 
 	return alien;
@@ -245,7 +225,6 @@ int main(int argc, char *argv[])
 	int mouse_timer     = 0;
 	int cant_alien      = 0;
 	int game_mode       = 0;
-	int secs            = 0;
 	bool rtos_fin       = 0;
 	
 	initBridge(&east_bridge,EAST_BRIDGE_CONFIG_FILENAME);
@@ -358,9 +337,9 @@ int main(int argc, char *argv[])
 				}else{
 				    detectButtonPresed(state.x,state.y,&game_mode);
 				    mouse_timer = 30;
-				    pthread_mutex_lock(&lock);
+				    lthread_mutex_trylock(&lock);
 				    eliminarAlien(state.x,state.y);
-				    pthread_mutex_unlock(&lock);
+				    lthread_mutex_unlock(&lock);
 					}
 			}
 		}
@@ -375,17 +354,9 @@ int main(int argc, char *argv[])
 			if(contador == 60){
 				movimiento = (movimiento+1)%4;
 				contador = 0;
-				pthread_mutex_lock(&lock);
+				lthread_mutex_trylock(&lock);
 				rtos_fin = reducirSegundo();
-				pthread_mutex_unlock(&lock);
-				if(game_mode == 1){
-					if(secs == 0){
-						create_alien(0);
-						secs = calcSegundosToCreateAlien(8);
-					}else{
-						secs --;
-					}
-				}
+				lthread_mutex_unlock(&lock);
 			}
 			contador += 1;
 			
@@ -399,7 +370,7 @@ int main(int argc, char *argv[])
 			
 
 			cant_alien = 0;
-			pthread_mutex_lock(&lock);
+			lthread_mutex_trylock(&lock);
 			while(cant_alien < listaAliens->length){
 				getAt(listaAliens,cant_alien,(void *) &alien_to_show);
 				if(alien_to_show->type == 0){
@@ -445,7 +416,7 @@ int main(int argc, char *argv[])
 				}
 				cant_alien++;
 			}
-			pthread_mutex_unlock(&lock);
+			lthread_mutex_unlock(&lock);
 			//Draw buttoms
 			al_draw_bitmap_region(Image,60,40,20,20,BTN0_X, BTN0_Y, 0);
 			al_draw_bitmap_region(Image2,60,40,20,20,BTN1_X, BTN1_Y, 0);

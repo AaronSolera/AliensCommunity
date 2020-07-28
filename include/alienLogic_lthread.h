@@ -3,7 +3,7 @@
 
 #include<stdio.h>
 #include<unistd.h>
-#include<pthread.h>
+#include<lpthread.h>
 #include<json-c/json.h>
 #include<math.h>
 #include<stdbool.h>
@@ -38,9 +38,10 @@ bool rectAlienCol(float x1,float y1, float x2, float y2);
 bool validateAlienCollision(float x1,float y1, Alien *alien, struct List *listaAliens);
 void loadRoute(Alien *alien);
 bool getNewPos(Alien *alien);
-void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens);
-void initAlien(Alien *alien,pthread_mutex_t  *lock,struct List *listaAliens);
+void AlienWhile(Alien *alien,lthread_mutex_t *lock,struct List *listaAliens);
+void initAlien(Alien *alien,lthread_mutex_t  *lock,struct List *listaAliens);
 void moveAlien(Alien *alien);
+void * newAlien (void *arg);
 void readAlienConfig(Alien *alien);
 
 

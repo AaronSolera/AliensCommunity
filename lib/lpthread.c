@@ -11,7 +11,7 @@ struct itimerval timer;
 struct sigaction act;
 sigset_t vtalrm;
 // Thread structs that stores relevant information
-lthread * current_thread;
+lthread * current_thread = NULL;
 
 // This program schedules context switching of enqueued threads
 void scheduler(int signal){
@@ -20,6 +20,8 @@ void scheduler(int signal){
 	// if no thread in the ready queue, resume execution
     if (steque_isempty(&ready_queue))
         return;
+    if (ready_queue.front == NULL)
+        return;
 	// get the next runnable thread and use preemptive scheduling
     lthread * next = (lthread *) steque_pop(&ready_queue);
     while(next->state == DONE){
@@ -27,9 +29,9 @@ void scheduler(int signal){
 	    free(next->context->uc_stack.ss_sp); 
 	    free(next->context);  
 	    free(next);
+        if (ready_queue.front == NULL) return;
         next = (lthread *) steque_pop(&ready_queue);
     }
-
     lthread * prev = current_thread;
     steque_enqueue(&ready_queue, prev);
     next->state = RUNNING; 
@@ -90,7 +92,7 @@ int lthread_create(lthread_t * thread, const lthread_attr_t * attr, void *(*rout
 		current_thread = main_thread;
 		// Setting uo the signal mask
     	sigemptyset(&vtalrm);
-    	sigaddset(&vtalrm, SIGVTALRM);
+    	sigaddset(&vtalrm, SIGALRM);
     	// In case this is blocked previously
    		sigprocmask(SIG_UNBLOCK, &vtalrm, NULL); 
 	
@@ -99,8 +101,14 @@ int lthread_create(lthread_t * thread, const lthread_attr_t * attr, void *(*rout
 	    timer.it_interval.tv_sec = 0;
 	    timer.it_value.tv_usec = QUANTUM;
 	    timer.it_value.tv_sec = 0; 
-	    
-	    if (setitimer(ITIMER_VIRTUAL, &timer, NULL) < 0)
+
+	    if (getcontext(main_thread->context) == -1)
+	    {
+	      perror("getcontext");
+	      exit(EXIT_FAILURE);
+	    }
+    
+	    if (setitimer(ITIMER_REAL, &timer, NULL) < 0)
 	    {
 	        perror("setitimer");
 	        exit(EXIT_FAILURE);
@@ -109,7 +117,7 @@ int lthread_create(lthread_t * thread, const lthread_attr_t * attr, void *(*rout
 	    // install signal handler for SIGVTALRM 
 	    memset(&act, '\0', sizeof(act));
 	    act.sa_handler = &scheduler;
-	    if (sigaction(SIGVTALRM, &act, NULL) < 0)
+	    if (sigaction(SIGALRM, &act, NULL) < 0)
 	    {
 	      perror ("sigaction");
 	      exit(EXIT_FAILURE);
@@ -263,6 +271,7 @@ void lthread_mutex_destroy(lthread_mutex_t *mutex){
 
 // This function unlock a lthread_mutex_t setting its lock value to false. It only works if the thread which locks it is unlocking it.
 void lthread_mutex_unlock(lthread_mutex_t *mutex){
+	if(current_thread == NULL) return;
 	if(mutex->blocking_thread == current_thread->id){
 		mutex->lock = false;
 	}
@@ -270,6 +279,7 @@ void lthread_mutex_unlock(lthread_mutex_t *mutex){
  
 // This function tries to lock a lthread_mutex_t setting its lock value to true. If it is already lock, the calling thread is put at the queue end  
 void lthread_mutex_trylock(lthread_mutex_t *mutex){
+	if(current_thread == NULL) return;
 	while(mutex->lock){
         scheduler(SIGVTALRM);
 	}
