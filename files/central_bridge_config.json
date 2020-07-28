@@ -3,7 +3,7 @@
 
     "capacity"                    	:  1,
 
-    "transit_control_algorithm" 	:  1,
+    "transit_control_algorithm" 	:  2,
 
     "scheduling_algorithm"        	:  4,
 

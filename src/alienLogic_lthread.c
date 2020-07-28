@@ -1,4 +1,4 @@
-#include "../include/alienLogic.h"
+#include "../include/alienLogic_lthread.h"
 
 //this 
 bool rectAlienCol(float x1,float y1, float x2, float y2){
@@ -193,18 +193,18 @@ void liberarMemoria(Alien *alien,struct List *listaAliens){
     }
 }
 
-void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
+void AlienWhile(Alien *alien,lthread_mutex_t *lock,struct List *listaAliens){
     int x = 0;
     int new_pos = 0;
 
     bool moveAlien = 1;
     
     while(moveAlien){
-        pthread_mutex_lock(lock);
+        lthread_mutex_trylock(lock);
         if(alien->stage == MAXSTAGESIZE){
             moveAlien = 0;
         }
-        //pthread_mutex_lock(pthread_mutex_t * mutex);
+        //lthread_mutex_trylock(lthread_mutex_t * mutex);
         if(alien->cond==1){
             if(fabs(alien->pos_x -alien->find_x)<alien->speed){
                 if(validateAlienCollision(alien->find_x,alien->pos_y,alien,listaAliens)){
@@ -243,7 +243,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
             new_pos = 0;
             alien->cond = 0;
         }
-        pthread_mutex_unlock(lock);
+        lthread_mutex_unlock(lock);
         sleep(0.5);
     }
     liberarMemoria(alien,listaAliens);
@@ -253,7 +253,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
 }
 
 
-void initAlien(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
+void initAlien(Alien *alien,lthread_mutex_t *lock,struct List *listaAliens){
     readAlienConfig(alien);
     alien->dir           = 1;
     alien->priority      = 3;

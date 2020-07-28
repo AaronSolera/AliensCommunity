@@ -8,11 +8,14 @@ RM_O = cd ./lib && rm *.o
 
 .PHONY: all
 
-all: allegro json main
+all: allegro json main main_lthread
 	$(RM_O)
 
 main: liblpthread.a libqueue.a liblinked_list.a libsteque.a
 	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
+	
+main_lthread: liblpthread.a libqueue.a liblinked_list.a libsteque.a
+	$(CC) -o ./bin/main_lthread ./src/main_lthread.c ./src/alienLogic_lthread.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS)
 	
 liblpthread.a: lpthread.o
 	$(LIB) $(MAKE_STATIC_LIB) liblpthread.a lpthread.o 
