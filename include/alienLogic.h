@@ -42,7 +42,6 @@ bool getNewPos(Alien *alien);
 void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens);
 void initAlien(Alien *alien,pthread_mutex_t  *lock,struct List *listaAliens);
 void moveAlien(Alien *alien);
-void * newAlien (void *arg);
 void readAlienConfig(Alien *alien);
 
 

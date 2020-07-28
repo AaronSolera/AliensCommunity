@@ -12,7 +12,7 @@ all: allegro json main
 	$(RM_O)
 
 main: liblpthread.a libqueue.a liblinked_list.a
-	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
+	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread -lm
 	
 liblpthread.a: lpthread.o
 	$(LIB) $(MAKE_STATIC_LIB) liblpthread.a lpthread.o 

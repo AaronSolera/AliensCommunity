@@ -12,6 +12,7 @@
 #include "linked_list.h"
 #include "../include/bridge.h"
 #include <allegro5/allegro_primitives.h>
+#include <math.h>
 //#include <json-c/json.h>
 
 #define WIDTH 1080
@@ -62,7 +63,26 @@ struct List *listaAliens;
 	ALLEGRO_BITMAP *ImageMode = NULL;
 	ALLEGRO_BITMAP *ImageSiNo = NULL;
 	ALLEGRO_BITMAP *ImageContinuar = NULL;
+/*int calcSegundosToCreateAlien(){
+	double total;
+	//asumiendo que quiero tener "de 20 a 140" fallos por cada 600 segundos la formula que se implementa es: 
+	int randito = rand() % 120 +20;
 
+	total       = (1 - pow (.7182,-(randito/600)*5))*5;
+	printf("%f\n",total);
+	randito     = floor(total);
+	randito    = fabs(randito);
+	
+	return randito;
+}*/
+
+int calcSegundosToCreateAlien(double x) {
+	double r = rand() / (RAND_MAX + 1.0);
+	double res = (-log(1 - r) / x)*x*2;
+	int result = floor(res);
+	printf("%d\n",result);
+	return result;
+}
 
 void continuar(){
 	al_clear_to_color(al_map_rgb(100, 100, 100));
@@ -227,6 +247,7 @@ int main(int argc, char *argv[])
 	int mouse_timer     = 0;
 	int cant_alien      = 0;
 	int game_mode       = 0;
+	int secs            = 0;
 	bool rtos_fin       = 0;
 	
 	initBridge(&east_bridge,EAST_BRIDGE_CONFIG_FILENAME);
@@ -367,6 +388,14 @@ int main(int argc, char *argv[])
 				pthread_mutex_lock(&lock);
 				rtos_fin = reducirSegundo();
 				pthread_mutex_unlock(&lock);
+				if(game_mode == 1){
+					if(secs == 0){
+						create_alien(0);
+						secs = calcSegundosToCreateAlien(8);
+					}else{
+						secs --;
+					}
+				}
 			}
 			contador += 1;
 			
