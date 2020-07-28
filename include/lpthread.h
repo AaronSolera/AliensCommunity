@@ -20,8 +20,9 @@
 #define DONE	 	1
 
 /*
-*	https://code.woboq.org/userspace/glibc/nptl/pthread_create.c.html
+*	Useful links:
 *
+*	https://code.woboq.org/userspace/glibc/nptl/pthread_create.c.html
 *	https://www2.cs.duke.edu/courses/spring09/cps110/projects/1/project1.text
 *	http://nitish712.blogspot.com/2012/10/thread-library-using-context-switching.html
 *	https://courses.engr.illinois.edu/cs423/sp2011/mps/mp3/mp3.pdf
