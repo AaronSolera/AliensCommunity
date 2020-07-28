@@ -2,7 +2,7 @@
 
 //this 
 bool rectAlienCol(float x1,float y1, float x2, float y2){
-    if((y1 <= y2 + 20)&&(y2 <= y1 +20)&&(x1 <= x2+20)&&(x2<= x1 +20)){
+    if((y1 <= y2 + 19)&&(y2 <= y1 +19)&&(x1 <= x2+19)&&(x2<= x1 +19)){
         return 1;
     }
     return 0;
@@ -29,8 +29,8 @@ bool validateAlienCollision(float x1,float y1,Alien *alien, struct List *listaAl
 void loadRoute(Alien *alien){
     if(alien->route == 0){
         alien->route_x[0]    = 130;
-        alien->route_x[1]    = 600;
-        alien->route_x[2]    = 600;
+        alien->route_x[1]    = 570;
+        alien->route_x[2]    = 570;
         alien->route_x[3]    = 850;
         alien->route_x[4]    = 850;
         alien->route_x[5]    = 850;
@@ -43,8 +43,8 @@ void loadRoute(Alien *alien){
         alien->route_y[1]    = 50;
         alien->route_y[2]    = 200;
         alien->route_y[3]    = 200;
-        alien->route_y[4]    = 270;
-        alien->route_y[5]    = 450;
+        alien->route_y[4]    = 270;//depende
+        alien->route_y[5]    = 480;//depende
         alien->route_y[6]    = 520;
         alien->route_y[7]    = 520;
         alien->route_y[8]    = 650;
@@ -52,12 +52,12 @@ void loadRoute(Alien *alien){
     }
     if(alien->route == 1){
         alien->route_x[0]    = 130;
-        alien->route_x[1]    = 600;
-        alien->route_x[2]    = 600;
-        alien->route_x[3]    = 600;
-        alien->route_x[4]    = 600;
-        alien->route_x[5]    = 600;
-        alien->route_x[6]    = 600;
+        alien->route_x[1]    = 570;
+        alien->route_x[2]    = 570;
+        alien->route_x[3]    = 570;
+        alien->route_x[4]    = 570;
+        alien->route_x[5]    = 570;
+        alien->route_x[6]    = 570;
         alien->route_x[7]    = 500;
         alien->route_x[8]    = 500;
         alien->route_x[9]    = 930;
@@ -66,8 +66,8 @@ void loadRoute(Alien *alien){
         alien->route_y[1]    = 50;
         alien->route_y[2]    = 200;
         alien->route_y[3]    = 240;
-        alien->route_y[4]    = 270;
-        alien->route_y[5]    = 450;
+        alien->route_y[4]    = 270;//
+        alien->route_y[5]    = 480;//
         alien->route_y[6]    = 520;
         alien->route_y[7]    = 520;
         alien->route_y[8]    = 650;
@@ -75,8 +75,8 @@ void loadRoute(Alien *alien){
     }
     if(alien->route == 2){
         alien->route_x[0]    = 130;
-        alien->route_x[1]    = 600;
-        alien->route_x[2]    = 600;
+        alien->route_x[1]    = 570;
+        alien->route_x[2]    = 570;
         alien->route_x[3]    = 230;
         alien->route_x[4]    = 230;
         alien->route_x[5]    = 230;
@@ -89,8 +89,8 @@ void loadRoute(Alien *alien){
         alien->route_y[1]    = 50;
         alien->route_y[2]    = 200;
         alien->route_y[3]    = 200;
-        alien->route_y[4]    = 270;
-        alien->route_y[5]    = 450;
+        alien->route_y[4]    = 270;//
+        alien->route_y[5]    = 480;//
         alien->route_y[6]    = 520;
         alien->route_y[7]    = 520;
         alien->route_y[8]    = 650;
@@ -104,8 +104,8 @@ void loadRoute(Alien *alien){
         alien->route_x[4]    = 830;
         alien->route_x[5]    = 830;
         alien->route_x[6]    = 830;
-        alien->route_x[7]    = 500;
-        alien->route_x[8]    = 500;
+        alien->route_x[7]    = 550;
+        alien->route_x[8]    = 550;
         alien->route_x[9]    = 130;
 
         alien->route_y[0]    = 600;
@@ -116,8 +116,8 @@ void loadRoute(Alien *alien){
         alien->route_y[5]    = 270;
         alien->route_y[6]    = 220;
         alien->route_y[7]    = 220;
-        alien->route_y[8]    = 70;
-        alien->route_y[9]    = 70;
+        alien->route_y[8]    = 100;
+        alien->route_y[9]    = 100;
     }
     if(alien->route == 4){
         alien->route_x[0]    = 930;
@@ -127,8 +127,8 @@ void loadRoute(Alien *alien){
         alien->route_x[4]    = 550;
         alien->route_x[5]    = 550;
         alien->route_x[6]    = 550;
-        alien->route_x[7]    = 500;
-        alien->route_x[8]    = 500;
+        alien->route_x[7]    = 550;
+        alien->route_x[8]    = 550;
         alien->route_x[9]    = 130;
 
         alien->route_y[0]    = 600;
@@ -139,8 +139,8 @@ void loadRoute(Alien *alien){
         alien->route_y[5]    = 270;
         alien->route_y[6]    = 220;
         alien->route_y[7]    = 220;
-        alien->route_y[8]    = 70;
-        alien->route_y[9]    = 70;
+        alien->route_y[8]    = 100;
+        alien->route_y[9]    = 100;
     }
     if(alien->route == 5){
         alien->route_x[0]    = 930;
@@ -150,8 +150,8 @@ void loadRoute(Alien *alien){
         alien->route_x[4]    = 210;
         alien->route_x[5]    = 210;
         alien->route_x[6]    = 210;
-        alien->route_x[7]    = 500;
-        alien->route_x[8]    = 500;
+        alien->route_x[7]    = 550;
+        alien->route_x[8]    = 550;
         alien->route_x[9]    = 130;
 
         alien->route_y[0]    = 600;
@@ -162,8 +162,8 @@ void loadRoute(Alien *alien){
         alien->route_y[5]    = 270;
         alien->route_y[6]    = 220;
         alien->route_y[7]    = 220;
-        alien->route_y[8]    = 70;
-        alien->route_y[9]    = 70;
+        alien->route_y[8]    = 100;
+        alien->route_y[9]    = 100;
     }
 }
 
@@ -177,6 +177,21 @@ bool getNewPos(Alien *alien){
     return 1;
 }
 
+void liberarMemoria(Alien *alien,struct List *listaAliens){
+    printf("Entra a la func\n");
+    int cantidad = 0;
+    Alien *alien_to_remove;
+    while(cantidad < listaAliens->length){
+        getAt(listaAliens,cantidad,(void *) &alien_to_remove);
+        
+        printf("eliminamos alien de la lista...\n");
+        if(alien_to_remove == alien){
+            removeAt(listaAliens,cantidad);
+            printf("eliminamos alien de la lista...\n");
+        }
+        cantidad ++;
+    }
+}
 
 void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
     int x = 0;
@@ -186,7 +201,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
     
     while(moveAlien){
         pthread_mutex_lock(lock);
-        if(alien->stage == 9){
+        if(alien->stage == MAXSTAGESIZE){
             moveAlien = 0;
         }
         //pthread_mutex_trylock(pthread_mutex_t * mutex);
@@ -197,8 +212,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
                     new_pos += 1;
                 }
                 
-            }
-            else if(alien->pos_x < alien->find_x){
+            }else if(alien->pos_x < alien->find_x){
                 if(validateAlienCollision(alien->pos_x + alien->speed,alien->pos_y,alien,listaAliens)){
                     alien->pos_x = alien->pos_x + alien->speed;
                 }
@@ -213,8 +227,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
                 alien->pos_y = alien->find_y;
                 new_pos += 1;
                 }
-            }
-            else if(alien->pos_y < alien->find_y){
+            }else if(alien->pos_y < alien->find_y){
                 if(validateAlienCollision(alien->pos_x,alien->pos_y + alien->speed,alien,listaAliens)){
                     alien->pos_y = alien->pos_y + alien->speed;
                 }
@@ -233,17 +246,18 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
         pthread_mutex_unlock(lock);
         sleep(0.5);
     }
+    liberarMemoria(alien,listaAliens);
+    free(alien);
     printf("Hilo eliminado.....");
     
 }
 
 
 void initAlien(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
-    alien->speed         = 0.3;
+    readAlienConfig(alien);
     alien->dir           = 1;
     alien->priority      = 3;
     alien->weight        = 3;
-    alien->max_exec_time = 5; 
     alien->cond          = 1;
     alien->stage         = 0;
     alien->queue         = 0;
@@ -256,7 +270,9 @@ void initAlien(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens){
     AlienWhile(alien, lock,listaAliens);
 }
 
-void readAlienConfig(int *alien_speed,double *alien_max_excec_time ){
+void readAlienConfig(Alien *alien){
+    double a_speed;
+    double a_time;
     FILE *fp;
     char buffer[1024];
 
@@ -274,8 +290,16 @@ void readAlienConfig(int *alien_speed,double *alien_max_excec_time ){
     json_object_object_get_ex(parsed_json, "speed", &speed);
     json_object_object_get_ex(parsed_json, "max_exec_time", &max_exec_time);
 
-    *alien_speed = json_object_get_int(speed);
-    *alien_max_excec_time = json_object_get_double(max_exec_time);
+    a_speed = json_object_get_double(speed);
+    a_time = json_object_get_double(max_exec_time);
+
+    if(alien->type == 0)
+        alien->speed = a_speed;
+    if(alien->type == 1)
+        alien->speed = a_speed*1.2;
+    if(alien->type == 2)
+        alien->speed = a_speed * (1 +(rand() % 150 + 50) / 100);
+    alien->max_exec_time = a_time;
 }
 
 void moveAlien(Alien *alien){

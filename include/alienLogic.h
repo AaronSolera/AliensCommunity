@@ -34,6 +34,7 @@ typedef struct Alien{
     int isSelected;
 
 } Alien;
+void liberarMemoria(Alien *alien,struct List *listaAliens);
 bool rectAlienCol(float x1,float y1, float x2, float y2);
 bool validateAlienCollision(float x1,float y1, Alien *alien, struct List *listaAliens);
 void loadRoute(Alien *alien);
@@ -42,7 +43,7 @@ void AlienWhile(Alien *alien,pthread_mutex_t *lock,struct List *listaAliens);
 void initAlien(Alien *alien,pthread_mutex_t  *lock,struct List *listaAliens);
 void moveAlien(Alien *alien);
 void * newAlien (void *arg);
-void readAlienConfig(int *alien_speed,double *alien_max_excec_time );
+void readAlienConfig(Alien *alien);
 
 
 #endif

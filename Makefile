@@ -1,6 +1,6 @@
 CC = gcc
 MAKE_STATIC_LIB = ar rv
-ALLEGRO_FLAGS = -lallegro -lallegro_image
+ALLEGRO_FLAGS = -lallegro -lallegro_image -lallegro_primitives
 JSON_FLAGS = -ljson-c
 LIB_FLAGS = -llpthread -lqueue -llinked_list
 LIB = cd ./lib &&
