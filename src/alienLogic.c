@@ -184,10 +184,8 @@ void liberarMemoria(Alien *alien,struct List *listaAliens){
     while(cantidad < listaAliens->length){
         getAt(listaAliens,cantidad,(void *) &alien_to_remove);
         
-        printf("eliminamos alien de la lista...\n");
         if(alien_to_remove == alien){
             removeAt(listaAliens,cantidad);
-            printf("eliminamos alien de la lista...\n");
         }
         cantidad ++;
     }
@@ -311,4 +309,35 @@ void moveAlien(Alien *alien){
 }
 
 
+void* newAlien(void *arg){
+    /*char* alien_type = (char *) arg;
+    
+    int alien_speed = 0;
+    double alien_max_excec_time = 0;
+    readAlienConfig(&alien_speed,&alien_max_excec_time);
+    Alien alien;
+    if(alien_type == "n"){
+        Alien alien2 = {alien_speed,1,100,100,1,10,5,10.12,1};//speed,posx,posy,dir,priority,weight,max_exec_time,route
+        alien = alien2;
+        printf("I'm a normal alien \n");
+    }
+    if(alien_type == "a"){
+        Alien alien2 = {alien_speed*1.20,1,200,200,1,10,5,10.12,1};//speed,posx,posy,dir,priority,weight,max_exec_time,route
+        alien = alien2;
+        printf("I'm a alpha alien \n");
+    }
+    if(alien_type == "b"){
+        Alien alien2 = {alien_speed,1,300,300,1,10,5,alien_max_excec_time,1};//speed,posx,posy,dir,priority,weight,max_exec_time,route
+        alien = alien2;
+        printf("I'm a beta alien \n");
+    }
 
+
+    int x = 0;
+    while(x<10){
+        printf("thread active\n");
+        moveAlien(&alien);
+        x++;
+    }
+    return NULL;*/
+};

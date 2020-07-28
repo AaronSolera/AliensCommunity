@@ -11,13 +11,8 @@ RM_O = cd ./lib && rm *.o
 all: allegro json main main_lthread
 	$(RM_O)
 
-<<<<<<< HEAD
-main: liblpthread.a libqueue.a liblinked_list.a
-	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread -lm
-=======
 main: liblpthread.a libqueue.a liblinked_list.a libsteque.a
-	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread
->>>>>>> b52b378ba6b8638bca332cf5dd2d15eca25308af
+	$(CC) -o ./bin/main ./src/main.c ./src/alienLogic.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS) -lpthread -lm
 	
 main_lthread: liblpthread.a libqueue.a liblinked_list.a libsteque.a
 	$(CC) -o ./bin/main_lthread ./src/main_lthread.c ./src/alienLogic_lthread.c ./src/bridge.c -I./include -L./lib $(LIB_FLAGS) $(ALLEGRO_FLAGS) $(JSON_FLAGS)

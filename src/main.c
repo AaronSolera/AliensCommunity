@@ -12,7 +12,6 @@
 #include "linked_list.h"
 #include "../include/bridge.h"
 #include <allegro5/allegro_primitives.h>
-#include <math.h>
 //#include <json-c/json.h>
 
 #define WIDTH 1080
@@ -52,7 +51,10 @@
 const float FPS = 60;
 
 
-pthread_mutex_t lock; 
+pthread_mutex_t lock;
+int a = 50;
+int b = 30;
+int c = 20; 
 
 struct List *listaAliens;
 	//define bitmaps
@@ -63,26 +65,7 @@ struct List *listaAliens;
 	ALLEGRO_BITMAP *ImageMode = NULL;
 	ALLEGRO_BITMAP *ImageSiNo = NULL;
 	ALLEGRO_BITMAP *ImageContinuar = NULL;
-/*int calcSegundosToCreateAlien(){
-	double total;
-	//asumiendo que quiero tener "de 20 a 140" fallos por cada 600 segundos la formula que se implementa es: 
-	int randito = rand() % 120 +20;
 
-	total       = (1 - pow (.7182,-(randito/600)*5))*5;
-	printf("%f\n",total);
-	randito     = floor(total);
-	randito    = fabs(randito);
-	
-	return randito;
-}*/
-
-int calcSegundosToCreateAlien(double x) {
-	double r = rand() / (RAND_MAX + 1.0);
-	double res = (-log(1 - r) / x)*x*2;
-	int result = floor(res);
-	printf("%d\n",result);
-	return result;
-}
 
 void continuar(){
 	al_clear_to_color(al_map_rgb(100, 100, 100));
@@ -91,6 +74,38 @@ void continuar(){
 	al_draw_bitmap_region(ImageSiNo,20,0,20,20,BTNNO_X,BTNNO_Y,0);	
 }
 
+void readAlienCreate(){
+    FILE *fp;
+    char buffer[1024];
+
+    struct json_object *parsed_json;
+
+    struct json_object *a_j;
+    struct json_object *b_j;
+    struct json_object *c_j;
+
+    fp =fopen(ALIEN_AUTO_CREATE_PAHT,"r");
+    fread(buffer, 1024, 1, fp);
+    fclose(fp);
+
+    parsed_json = json_tokener_parse(buffer);
+    
+    json_object_object_get_ex(parsed_json, "a", &a_j);
+    json_object_object_get_ex(parsed_json, "b", &b_j);
+    json_object_object_get_ex(parsed_json, "c", &c_j);
+
+    a = json_object_get_int(a_j);
+    b = json_object_get_int(b_j);
+    c = json_object_get_int(c_j);
+}
+
+int calcSegundosToCreateAlien(double x) {
+	double r = rand() / (RAND_MAX + 1.0);
+	double res = (-log(1 - r) / x)*x*2;
+	int result = floor(res);
+	printf("%d\n",result);
+	return result;
+}
 
 bool reducirSegundo(){
 	Alien *alien_to_timer;
@@ -238,7 +253,7 @@ int main(int argc, char *argv[])
 {
 
 	struct Bridge east_bridge, center_bridge, west_bridge;
-
+	readAlienCreate();
     //
 	int movimiento      = 0;
 	int contador        = 0;
@@ -247,6 +262,7 @@ int main(int argc, char *argv[])
 	int game_mode       = 0;
 	int secs            = 0;
 	bool rtos_fin       = 0;
+	int random_create_al= 0;
 	
 	initBridge(&east_bridge,EAST_BRIDGE_CONFIG_FILENAME);
 	initBridge(&center_bridge,CENTRAL_BRIDGE_CONFIG_FILENAME);
@@ -380,7 +396,24 @@ int main(int argc, char *argv[])
 				pthread_mutex_unlock(&lock);
 				if(game_mode == 1){
 					if(secs == 0){
-						create_alien(0);
+						random_create_al = rand ()%2;
+						if(random_create_al){
+							random_create_al = rand () %100;
+							if(random_create_al<a)
+								create_alien(0);
+							else if(random_create_al< (a+b))
+								create_alien(1);
+							else if(random_create_al< (a + b + c))
+								create_alien(2);
+						}else{
+							random_create_al = rand () %100;
+							if(random_create_al<a)
+								create_alien(3);
+							else if(random_create_al< (a+b))
+								create_alien(4);
+							else if(random_create_al< (a + b + c))
+								create_alien(5);
+						}
 						secs = calcSegundosToCreateAlien(8);
 					}else{
 						secs --;
